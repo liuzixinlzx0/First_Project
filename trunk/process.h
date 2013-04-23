@@ -10,3 +10,5 @@ struct pcaket{
 void process_ether(char *ether);
 
 void process_ip(char *ip_pkt);
+
+void process_tcp(char *tcp_pkt);

@@ -6,33 +6,26 @@
 #include <errno.h>
 #include <pcap/pcap.h>
 
+#include "func.h"
 #include "process.h"
 
 struct pcaket p;
 struct pcaket *pkt = &p;
+int length;
+char *tmp_pkt;
+
 
 void pkt_process(u_char *user, const struct pcap_pkthdr *h, const u_char *bytes)
 {
-	int i;
 
 	printf("\n\n ############ One New Packet ############### \n");
 	printf("Capture pcaket time is %s", ctime((const time_t *)&h->ts.tv_sec));
 	printf("Cpature pcaket length is %d\n", h->caplen);
 	printf("Pcaket real length is %d\n", h->len);
 
-	printf("Pcaket hex is: \n");
-	for(i = 0; i < h->caplen; i++){
-		if((i+1)%4 == 0){
-			if(((i+1)%8 == 0)){
-				printf("%02x\n", bytes[i]);
-			}else{
-				printf("%02x	", bytes[i]);
-			}
-		}else{
-			printf("%02x ", bytes[i]);
-		}
-	}		
-	printf("\n");
+	length = h->caplen;
+	print_hex((char *)bytes, length);
+
 	process_ether((char *)bytes);
 }
 
